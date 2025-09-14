@@ -85,6 +85,8 @@ export const AuthProvider = ({ children }) => {
 
     const newSocket = io(backendUrl, {
       query: { userId: userData._id },
+        transports: ["polling"],   
+        withCredentials: true,
     });
 
     newSocket.connect();

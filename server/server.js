@@ -6,7 +6,7 @@ import { connectDb } from './lib/db.js'
 import userRouter from "./routes/userRoutes.js";
 import messageRouter from "./routes/messageRoutes.js";
 import { Server } from "socket.io";
-import { Socket } from "dgram";
+// import { Socket } from "dgram";
 
 //create Express app and http server
 
@@ -15,8 +15,8 @@ const server = http.createServer(app);
 
 // initialize socket.io server
 export const io = new Server( server , {
-    cors:{ origin : "*"}
-})
+    cors:{ origin : "*", methods : ["GET" , "POST"],},
+});
 
 // store online users
 
@@ -24,17 +24,17 @@ export const userSocketMap =  {} ; // { userId : socketId}
 
 // socket.io connection handler
 
-io.on("connection", (Socket)=>{
-    const userId = Socket.handshake.query.userId;
+io.on("connection", (socket)=>{
+    const userId = socket.handshake.query.userId;
     console.log("User Connected" , userId);
 
-    if(userId) userSocketMap[userId] = Socket.id;
+    if(userId) userSocketMap[userId] = socket.id;
 
     //Emit online users to all connected clients
 
     io.emit("getOnlineUsers" , Object.keys(userSocketMap));
 
-   Socket.on("disconnect", ()=>{
+   socket.on("disconnect", ()=>{
     console.log("user disconnected" , userId);
     delete userSocketMap[userId];
     io.emit("getOnlineUsers" , Object.keys(userSocketMap))
