@@ -15,7 +15,7 @@ const server = http.createServer(app);
 
 // initialize socket.io server
 export const io = new Server( server , {
-    cors:{ origin : "*", methods : ["GET" , "POST"],},
+    cors:{ origin : "https://chat-app-alpha-eight-15.vercel.app", methods : ["GET" , "POST"],},
 });
 
 // store online users
