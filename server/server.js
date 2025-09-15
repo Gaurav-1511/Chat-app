@@ -15,7 +15,7 @@ const server = http.createServer(app);
 
 // initialize socket.io server
 export const io = new Server( server , {
-    cors:{ origin : "https://chat-app-alpha-eight-15.vercel.app", methods : ["GET" , "POST"],},
+    cors:{ origin : "https://chat-app-alpha-eight-15.vercel.app", methods : ["GET" , "POST"], credentials : true },
 });
 
 // store online users
@@ -45,7 +45,9 @@ io.on("connection", (socket)=>{
 // Middleware setup
 
 app.use(express.json({limit : "20mb"}));
-app.use(cors());
+app.use(cors({
+    origin: "https://chat-app-alpha-eight-15.vercel.app" , credentials: true
+}));
 app.use(express.urlencoded({ extended: true, limit: "20mb" }));
 //route setup
 
