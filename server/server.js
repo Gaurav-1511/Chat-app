@@ -15,7 +15,7 @@ const server = http.createServer(app);
 
 // initialize socket.io server
 export const io = new Server( server , {
-    cors:{ origin : "https://chat-app-alpha-eight-15.vercel.app", methods : ["GET" , "POST"], credentials : true },
+    cors:{ origin : ["https://chat-app-alpha-eight-15.vercel.app"], methods : ["GET" , "POST"], credentials : true },
 });
 
 // store online users
@@ -25,7 +25,7 @@ export const userSocketMap =  {} ; // { userId : socketId}
 // socket.io connection handler
 
 io.on("connection", (socket)=>{
-    const userId = socket.handshake.query.userId;
+    const userId = socket.handshake.auth.userId;
     console.log("User Connected" , userId);
 
     if(userId) userSocketMap[userId] = socket.id;
