@@ -85,7 +85,7 @@ export const AuthProvider = ({ children }) => {
 
     const newSocket = io(backendUrl, {
       query: { userId: userData._id },
-        transports: ["polling"],   
+        transports: ["polling" , "websocket"],   
         withCredentials: true,
     });
 
@@ -100,10 +100,10 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common["token"] = token;
-     
+     checkAuth();
     }
-    checkAuth();
-  } , []);
+    
+  }, [token]);
 
   const value = {
     axios,
